@@ -1,0 +1,86 @@
+<!--小球运动-->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>小球运动</title>
+    <style>
+        *{padding:0;margin:0;text-decoration: none;list-style: none;}
+        div{
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            background-color: blue;
+            opacity: .6;
+        }
+    </style>
+</head>
+<body>
+    <script>
+        (function() {
+            var arr = [];
+            function BallAnimation(color){
+                this.oBall = document.createElement("div");
+                this.oBall.style.backgroundColor= color;
+                document.body.appendChild(this.oBall);
+                this.speedX = Math.floor(Math.random()*10+1);
+                this.speedY = Math.floor(Math.random()*10+1);
+                this.maxX = document.documentElement.clientWidth - this.oBall.offsetWidth;
+                this.maxY = document.documentElement.clientHeight - this.oBall.offsetHeight;
+                this.topX = this.oBall.offsetLeft;
+                this.topY = this.oBall.offsetTop;
+                if(typeof this.run != "function"){
+                    arguments.callee.prototype.run = function (){
+                        with (this){
+                            topX += speedX;
+                            topY += speedY;
+                            if (topX <= 0 || topX >= maxX) {
+                                topX = Math.max(0, topX);
+                                topX = Math.min(topX, maxX);
+                                speedX = -speedX;
+                            }
+                            if (topY <= 0 || topY >= maxY) {
+                                topY = Math.max(0, topY);
+                                topY = Math.min(topY, maxY);
+                                speedY = -speedY;
+                            }
+                            this.oBall.style.top = topY + "px";
+                            this.oBall.style.left = topX + "px";
+                        }
+                        requestAnimationFrame(arguments.callee.bind(this));
+                    };
+                }
+                arr.push(this);
+            }
+            new BallAnimation("red").run();
+            new BallAnimation("aqua").run();
+            new BallAnimation("pink").run();
+            new BallAnimation("yellow").run();
+            new BallAnimation("green").run();
+            new BallAnimation("red").run();
+            new BallAnimation("aqua").run();
+            new BallAnimation("pink").run();
+            new BallAnimation("yellow").run();
+            new BallAnimation("green").run();
+            new BallAnimation("red").run();
+            new BallAnimation("aqua").run();
+            new BallAnimation("pink").run();
+            new BallAnimation("yellow").run();
+            new BallAnimation("green").run();
+            window.onresize = function (){
+                for(var i = 0;i<arr.length;i++) {
+                    arr[i].maxX = document.documentElement.clientWidth - arr[i].oBall.offsetWidth;
+                    arr[i].maxY = document.documentElement.clientHeight - arr[i].oBall.offsetHeight;
+                }
+            };
+        })();
+
+
+
+
+    </script>
+</body>
+</html>

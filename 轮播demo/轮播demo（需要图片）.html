@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>简单的轮播</title>
+    <style>
+        /**主盒子,控制盒子大小**/
+        #banner{
+            position: relative;
+            margin: 30px auto;
+            width: 500px;
+            height: 300px;
+            background-color: aqua;
+            overflow: hidden;
+        }
+        /**左右按钮样式**/
+        #banner .ban-left,#banner .ban-right{
+            position: absolute;
+            top:50%;
+            margin-top: -25px;
+            width: 50px;
+            height: 50px;
+            background-color: black;
+            opacity: 0;
+            font-size: 30px;
+            line-height: 50px;
+            color: white;
+            text-align: center;
+            transition: 0.3s;
+            cursor: pointer;
+        }
+        #banner .ban-right{
+            right: -50px;
+        }
+        #banner .ban-left{
+            left: -50px;
+        }
+        #banner:hover .ban-left{
+            left:10px;
+            opacity: 0.8;
+        }
+        #banner:hover .ban-right{
+            right:10px;
+            opacity: 0.8;
+        }
+        /**导航按钮样式**/
+        #banner .ban-button{
+            position: absolute;
+            left: 0;
+            right: 0;
+            bottom: 1%;
+            text-align: center;
+        }
+        #banner .ban-button span{
+            display: inline-block;
+            margin: 0 5px;
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            background-color: white;
+            cursor: pointer;
+        }
+        #banner .ban-button span.on{
+            background-color: orange;
+        }
+        /**文章内容样式**/
+        #banner .ban-content{
+            position: absolute;
+            height: 100%;
+            left: 0;
+            overflow: hidden;
+            transition: 0.3s;
+        }
+        #banner .ban-content:after{
+            content: '';
+            clear: both;
+        }
+        #banner .ban-part{
+            float: left;
+            transition: 0.3s;
+        }
+        #banner .article{
+            width: 100%;
+            position: absolute;
+            background-color: black;
+            bottom: 0;
+            font-size: 16px;
+            opacity: .5;
+        }
+        #banner .article h2{
+            color: white;
+            margin: 10px;
+        }
+        #banner .article p{
+            color: white;
+            margin: 10px 10px 20px;
+        }
+    </style>
+</head>
+<body>
+    <div id="banner">
+        <!--内容容器-->
+        <div class="ban-content">
+            <!--内容分块-->
+            <div class="ban-part">
+                <div class="ban-img"><img src="1.jpg" width="500" height="300"></div>
+                <div class="article">
+                    <h2>我的世界</h2>
+                    <p>我的世界是一款自由度很高的沙盒游戏</p>
+                </div>
+            </div>
+            <div class="ban-part">
+                <div class="ban-img"><img src="2.jpg" width="500" height="300" alt=""></div>
+                <div class="article">
+                    <h2>我的世界1.13</h2>
+                    <p>1.13全新版本水下世界</p>
+                </div>
+            </div>
+            <div class="ban-part">
+                <div class="ban-img"><img src="3.jpg" width="500" height="300" alt=""></div>
+                <div class="article">
+                    <h2>建筑欣赏</h2>
+                    <p>美丽的建筑</p>
+                </div>
+            </div>
+            <div class="ban-part">
+                <div class="ban-img"><img src="4.jpg" width="500" height="300" alt=""></div>
+                <div class="article">
+                    <h2>建筑欣赏</h2>
+                    <p>美丽的建筑</p>
+                </div>
+            </div>
+            <div class="ban-part">
+                <div class="ban-img"><img src="5.jpg" width="500" height="300" alt=""></div>
+                <div class="article">
+                    <h2>建筑欣赏</h2>
+                    <p>美丽的建筑</p>
+                </div>
+            </div>
+        </div>
+        <!--左右按钮-->
+        <div class="ban-left">&lt;</div>
+        <div class="ban-right">&gt;</div>
+        <!--导航按钮-->
+        <div class="ban-button">
+        </div>
+    </div>
+    <script>
+        {
+            let oCon = document.querySelector("#banner .ban-content"),
+                oBanR = document.querySelector(".ban-right"),
+                oBanL = document.querySelector(".ban-left"),
+                oNum = document.querySelectorAll("#banner .ban-content .ban-part").length,
+                oBun = document.querySelector(".ban-button"),
+                oArr = [],    //导航按钮数组
+                index = 0,      //轮播当前值
+                oLen = 0;       //定位距离
+            //左右按钮事件
+            function rt() {
+                oArr[index++].className = "";
+                index %= oNum;
+                oArr[index].className = "on";
+                oLen -= 100;
+                (oLen <= -oNum * 100) && (oLen = 0);
+                oCon.style.left = oLen + "%";
+            }
+            document.querySelector(".ban-content").style.width = oNum * 100 + "%";
+            oBanR.addEventListener("click", rt);
+            oBanL.addEventListener("click", function() {
+                oArr[index--].className = "";
+                (index < 0) && (index = oNum - 1);
+                oArr[index].className = "on";
+                oLen += 100;
+                (oLen >= 100) && (oLen = -(oNum-1) * 100);
+                oCon.style.left = oLen + "%";
+            });
+            //添加导航按钮和事件
+            for (let i = 0; i < oNum; i++) {
+                let sp = document.createElement("span");
+                (i == 0) && (sp.className = "on");
+                sp.onclick = function () {
+                    oLen = i * (-100);
+                    oCon.style.left = oLen + "%";
+                    this.className = 'on';
+                    oArr[index].className = '';
+                    index = i;
+                };
+                oBun.appendChild(sp);
+                oArr.push(sp);
+            }
+            let interval = setInterval(rt,3000);
+            oCon.parentNode.onmouseenter = function () {
+                clearInterval(interval);
+            };
+            oCon.parentNode.onmouseleave = function () {
+                interval = setInterval(rt,3000);
+            };
+        }
+    </script>
+</body>
+</html>

@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <style>
+        *{
+            padding:0;
+            margin:0;
+            text-decoration: none;
+            list-style: none;
+        }
+        #box{
+            width: 800px;
+            height: 600px;
+            margin: 100px auto;
+            border: 5px solid black;
+        }
+        #box .left,#box .right{
+            float: left;
+            width: 50%;
+            height: 100%;
+        }
+        #box .left{
+            background-color: aliceblue;
+        }
+        #box .right{
+            background-color: yellow;
+        }
+        #box .left li{
+            float: left;
+            margin:0 3px;
+            padding:0 5px;
+            border: 1px solid pink;
+            color: pink;
+        }
+        #box .left li span{
+            padding: 0 5px;
+            color: red;
+        }
+        .clearfix:after{
+            display: block;
+            content: "";
+            clear: both;
+        }
+    </style>
+</head>
+<body>
+    <div id="box" class="clearfix">
+        <ul class="left">
+            <ul class="clearfix">
+                <li>请选择标签：</li>
+                <li class="sister">html</li>
+                <li class="sister">css</li>
+                <li class="sister">javascript</li>
+                <li class="sister">jQuery</li>
+                <li class="sister">Vue</li>
+                <li class="sister">Node.js</li>
+            </ul>
+            <ul class="select"></ul>
+        </ul>
+        <ul class="right"></ul>
+    </div>
+    <script>
+        var oSis = document.querySelectorAll("#box .left .sister"),
+            oSelect = document.querySelector("#box .left .select"),
+            oRight = document.querySelector("#box .right");
+            len = oSis.length;
+        for(var i=0;i<len;i++){
+            oSis[i].bool = false;
+            oSis[i].onclick = function () {
+                if(!this.bool) {
+                    var oLi1 = this.cloneNode(true),
+                        oLi2 = this.cloneNode(true),
+                        span = document.createElement("span"),
+                        that = this;
+                    span.innerHTML = "X";
+                    span.onclick = function(){
+                        oSelect.removeChild(oLi1);
+                        oRight.removeChild(oLi2);
+                        that.bool =!that.bool;
+                    }
+                    oLi1.appendChild(span);
+                    oSelect.appendChild(oLi1);
+                    oRight.appendChild(oLi2);
+                    this.bool = !this.bool;
+                }
+            }
+        }
+    </script>
+</body>
+</html>

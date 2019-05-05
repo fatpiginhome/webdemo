@@ -1,0 +1,190 @@
+@charset "UTF-8";
+*{
+    margin: 0;
+    padding: 0;
+    list-style: none;
+    text-decoration: none;
+}
+a{
+    color: inherit;
+}
+.clf:after{
+    content: '';
+    display: block;
+    clear: both;
+}
+.mr30{
+    margin-top: 30px;
+}
+header{
+    width: 100%;
+    height: 40px;
+    font-size: 12px;
+    color: #b0b0b0;
+    background-color: rgb(51,51,51);
+}
+header a:hover{
+    color: white;
+}
+header #main{
+    margin: auto;
+    width: 1226px;
+    line-height: 40px;
+}
+header #main .lt{
+    float: left;
+}
+header #main .rt{
+    float: right;
+}
+header .lt span,header .rt span{
+    margin:0 .5em;
+    color: #424242;
+}
+header span,header a{
+    float:left;
+}
+header .shopcar{
+    float: right;
+    position: relative;
+    margin-left: 25px;
+    width: 120px;
+    height: 100%;
+    background-color: rgb(66,66,66);
+    text-align:center;
+    cursor: pointer;
+}
+header .shopcar:hover{
+    background-color: white;
+}
+header .shopcar:hover span{
+    color: #ff6700;
+}
+header .shopcar:hover i{
+    background-image: url("../img/692a6c3b0a93a24f74a29c0f9d68ec71.png");
+}
+header .shopcar i{
+    display: inline-block;
+    width: 20px;
+    height: 20px;
+    background-image: url("../img/d7db56d1d850113f016c95e289e36efa.png");
+    background-size: 20px 20px;
+    margin-right: 2px;
+    vertical-align: -7px;
+}
+header .shopcar span{
+    float:none;
+}
+header .shopcar .list{
+    position: absolute;
+    z-index: -2;
+    right: 0;
+    width: 316px;
+    height: 0;
+    color: white;
+    line-height: 0px;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.15);
+    visibility:hidden;
+    transition: .2s;
+}
+header .shopcar:hover .list{
+    height: 98px;
+    visibility: visible;
+    color: black;
+    line-height: 98px;
+}
+/*logo、导航、搜索框*/
+section.nav{
+    width: 1226px;
+    margin: 20px auto 0;
+}
+section.nav .logo{
+    float: left;
+}
+section.nav .logo img{
+    vertical-align: bottom;
+}
+section.nav .list{
+    float: left;
+    font-size: 16px;
+    margin-left: 180px;
+}
+section.nav .list li{
+    float: left;
+    padding:0 10px;
+    color: #333;
+    line-height: 56px;
+}
+section.nav .list li a:hover{
+    color: #ff6700;
+}
+section.nav .list .list-d{
+    position: relative;
+    width: 1226px;
+    margin: auto;
+    text-align: center;
+}
+section.nav .list .list-d .phoneimg img{
+    vertical-align: bottom;
+}
+section.nav .list .list-d .phoneimg{
+    margin-top: 10px;
+    margin-bottom: 20px;
+}
+section.nav .list .item{
+    position: absolute;
+    overflow: hidden;
+    visibility: hidden;
+    z-index: -10;
+    margin-top: 20px;
+    left: 0;
+    width: 100%;
+    height: 0;
+    border-top: 1px solid rgb(224,224,224);
+    border-bottom: 1px solid rgb(224,224,224);
+}
+section.nav .list .item p{
+    font-size: 12px;
+    line-height: 150%;
+}
+section.nav .list .item p.flag{
+    margin-bottom: 20px;
+}
+section.nav .list .item p.flag span{
+    display: inline-block;
+    color: #ff6700;
+    padding: 1px 20px;
+    border: 1px solid #ff6700;
+}
+section.nav .list .list-d li{
+    padding: 0;
+    width: 204px;
+}
+section.nav .list .list-d li + li .phoneimg{
+    border-left: 1px solid rgb(224,224,224);
+}
+section.nav .list > ul > li:hover .item{
+    height: 230px;
+    visibility: visible;
+}
+section.nav .sch{
+    float: right;
+}
+section.nav .sch input{
+    float: left;
+    width: 245px;
+    height: 50px;
+    font-size: 14px;
+    border: 1px solid rgb(224,224,224);
+    vertical-align: bottom;
+}
+section.nav .sch button{
+    float: left;
+    width: 52px;
+    height: 52px;
+    border: 1px solid rgb(224,224,224);
+    vertical-align: bottom;
+    background-image: url("../img/55cad219421bee03a801775e7309b920.png");
+    background-size: 50px 50px;
+    background-color: white;
+}

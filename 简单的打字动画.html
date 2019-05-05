@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <style>
+        *{
+            padding:0;
+            margin:0;
+        }
+    </style>
+</head>
+<body>
+    <pre id="fucktype">
+    /*****************************
+         Hi,my name is yuyu,
+         i will show you basic
+         typing animation
+    ****************************/
+    </pre>
+    <script>
+        let arr = fucktype.innerText.split(''),
+            str2 = '',i=0,
+            type = true;
+        (function fn() {
+            if(type){
+                (i < arr.length) && (str2 += arr[i],i++);
+                (i == arr.length) && (type=!type);
+            }else{
+                (i > -1) && (str2 = str2.slice(0,i),i--);
+                (i==0) && (type = !type);
+            }
+            fucktype.innerText = str2;
+            requestAnimationFrame(arguments.callee);
+        })();
+
+    </script>
+</body>
+</html>

@@ -1,0 +1,223 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>论文提交页</title>
+    <style>
+        *{margin: 0;padding: 0;list-style: none;}
+        a{text-decoration: none}
+        #box{
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            background-image: url("/www.acg.gy_04.jpg");
+            background-size: cover;
+        }
+        #body{
+            width: 72%;
+            height: 85%;
+            margin: 2.5% auto 0;
+            padding:30px 10%;
+            background-color: rgba(255,255,255,.8);
+            border-radius: 15px;
+            overflow: auto;
+        }
+        #body h1{
+            text-align: center;
+        }
+        #body div{
+            margin: 30px 0;
+        }
+        #title,#job,#workplace,#keyword,#authorname{
+            width: 350px;
+            height: 1.5rem;
+            font-size: 1rem;
+            margin-left: 32px;
+        }
+        #keyword{
+            margin-left: 16px;
+        }
+        #type{
+            width: 150px;
+        }
+        #money{
+            width: 70px;
+        }
+        #description{
+            width: 700px;
+            height: 300px;
+            font-size: 20px;
+            margin-left: 32px;
+            vertical-align: top;
+        }
+        #file{
+            margin-left: 32px;
+        }
+        .sec{
+            word-spacing: 30px;
+            text-align: center;
+        }
+        .sec a{
+            display: inline-block;
+            background-color: dodgerblue;
+            color: white;
+            width: 100px;
+            height: 40px;
+            line-height: 40px;
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+    <div id="box">
+        <div id="body">
+            <h1>论文提交</h1>
+            <div>
+                题目：
+                <input type="text" id="title">
+            </div>
+            <div>
+                论文类型：
+                <input type="text" id="type">
+            </div>
+            <div>
+                作者：
+                <input type="text" id="authorname">
+            </div>
+            <div>
+                身份：
+                <input type="text" id="job">
+            </div>
+            <div>
+                单位：
+                <input type="text" id="workplace">
+            </div>
+            <div>
+                摘要：
+                <textarea id="description"></textarea>
+            </div>
+            <div>
+                关键词：
+                <input type="text" id="keyword">
+            </div>
+            <div>
+                分配金额：
+                <input type="text" id="money">
+            </div>
+            <div id="dform">
+                文件：
+                <form action="" method="post" enctype="multipart/form-data" style="display: inline" id="form">
+                    <input type="file" name="file" id="file" value="" multiple="multiple" />
+                    <input type="text" name="docid" value="" id="docid" style="display: none"/>
+                    <input type="submit" value="提交"/>
+                </form>
+            </div>
+            <div class="sec">
+                <a href="command">返回</a>
+                <a href="command" id="btn">确认</a>
+            </div>
+            <script src="/ajax.js"></script>
+            <script>
+                if(GetQueryString("docid")){
+                    form.action = "upload?docid="+GetQueryString("docid");
+                    docid.value = GetQueryString("docid");
+                }else{
+                    dform.style.display="none";
+                }
+                let btn = document.getElementById("btn");
+                function GetQueryString(name) {
+                    let reg = new RegExp("(^|&)" + name + "=([^&]*)(&|$)", "i");
+                    let r = window.location.search.substr(1).match(reg);  //获取url中"?"符后的字符串并正则匹配
+                    let context = "";
+                    if (r != null)
+                        context = r[2];
+                    reg = null;
+                    r = null;
+                    return context == null || context == "" || context == "undefined" ? "" : context;
+                }
+                if(GetQueryString('docid')){
+                    ajax({
+                        url: 'fileModify',
+                        data:{
+                            docid:Number(GetQueryString('docid'))
+                        },
+                        method:"post",
+                        timeout: 1000,
+                        success: function(msg){
+                            data = JSON.parse(msg);
+                            title.value = data.name;
+                            type.value =data.type;
+                            job.value= data.job;
+                            workplace.value =data.location;
+                            description.value  =data.description;
+                            keyword.value=data.keywords;
+                            money.value=data.money;
+                            authorname.value = data.authorname;
+                        },
+                        error: function(msg){
+                            console.error(msg);
+                        }
+                    });
+                }
+                btn.onclick = function () {
+                    if(title.value && type.value  && job.value &&
+                        workplace.value && description.value && keyword.value && money.value){
+                            if(window.confirm("你确认提交吗？")){
+                                if(GetQueryString('docid')){
+                                    ajax({
+                                        url: 'submit',
+                                        data: { // 发送的数据
+                                            name:title.value,
+                                            job:job.value,
+                                            type:type.value,
+                                            location:workplace.value,
+                                            description:description.value,
+                                            keywords:keyword.value,
+                                            money:money.value,
+                                            authorname:authorname.value,
+                                            id:GetQueryString('docid')
+                                            // "file":"doc/01.docx"
+                                        },
+                                        method:"post",
+                                        timeout: 1000,
+                                        success: function(msg){
+                                            window.location.href = 'command';
+                                        },
+                                        error: function(msg){
+                                            console.error(msg)
+                                        }
+                                    });
+                                }else{
+                                    ajax({
+                                        url: 'submit',
+                                        data: { // 发送的数据
+                                            name:title.value,
+                                            job:job.value,
+                                            type:type.value,
+                                            location:workplace.value,
+                                            description:description.value,
+                                            keywords:keyword.value,
+                                            money:money.value,
+                                            authorname:authorname.value
+                                            // "file":"doc/01.docx"
+                                        },
+                                        method:"post",
+                                        timeout: 1000,
+                                        success: function(msg){
+                                            window.location.href = 'command';
+                                        },
+                                        error: function(msg){
+                                            console.error(msg)
+                                        }
+                                    });
+                                }
+                        }
+                    }else{
+                        alert("必须填写所有项才能提交");
+                    }
+                };
+            </script>
+        </div>
+    </div>
+</body>
+</html>

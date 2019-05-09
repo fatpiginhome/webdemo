@@ -1,0 +1,28 @@
+{
+  "name": "keyanxunlian",
+  "version": "1.0.0",
+  "description": "",
+  "main": "./serverjs/app.js",
+  "dependencies": {
+    "bluebird": "^3.5.3",
+    "hummus": "^1.0.95",
+    "image-watermark": "0.0.7",
+    "image-watermark-2": "0.0.9",
+    "koa": "^2.6.2",
+    "koa-body": "^4.0.6",
+    "koa-route": "^3.2.0",
+    "koa-router": "^7.4.0",
+    "koa-session": "^5.10.1",
+    "koa-static": "^5.0.0",
+    "node-pdftk": "^2.0.2",
+    "stream": "0.0.2",
+    "word2pdf": "^1.0.7"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node server.js"
+  },
+  "author": "",
+  "license": "ISC"
+}

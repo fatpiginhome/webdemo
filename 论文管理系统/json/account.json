@@ -1,0 +1,36 @@
+[
+  {
+    "id":1,
+    "account":"admin",
+    "password":"admin",
+    "name":"李育裕",
+    "type":0,
+    "admin":"",
+    "schAdmin":"",
+    "location":"计算机科学与技术学院",
+    "lastLogin":"2018-12-25 14:40 星期二",
+    "local":"1"
+  },{
+  "id":2,
+  "account":"muzijian",
+  "password":"muzijian",
+  "name":"母子健",
+  "type":0,
+  "admin":"1",
+  "schAdmin":"",
+  "location":"计算机科学与技术学院",
+  "lastLogin":"2018-12-25 14:40 星期二",
+  "local":"1"
+  },{
+  "id":3,
+  "account":"miaoshe",
+  "password":"miaoshe",
+  "name":"张伟",
+  "type":0,
+  "admin":"",
+  "schAdmin":"1",
+  "location":"长春理工大学",
+  "lastLogin":"2018-12-25 14:40 星期二",
+  "local":"1"
+}
+]

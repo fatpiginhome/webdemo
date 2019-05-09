@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>论文管理系统</title>
+    <style>
+        *{margin: 0;padding: 0;list-style: none;}
+        a{text-decoration: none;color: inherit;}
+        .ablue a{color: dodgerblue}
+        .ablue{text-align: center}
+        #box {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            background-image: url("/www.acg.gy_04.jpg");
+            background-size: cover;
+        }
+        #head{
+            width: 90%;
+            margin: 30px auto;
+            background-color: rgba(255,255,255,.8);
+            text-align: center;
+            line-height: 33px;
+            border-radius: 15px;
+        }
+        #head span{
+            display: inline-block;
+            padding-right: 30px;
+        }
+        #head .sec{
+            text-align: center;
+        }
+        #body{
+            width: 90%;
+            height: 80%;
+            background-color: rgba(255,255,255,.8);
+            margin: auto;
+            line-height: 1.5;
+            border-radius: 15px;
+            overflow: auto;
+        }
+        #body li{
+            line-height: 40px;
+            border-bottom: 1px solid gray;
+        }
+        #body li span{
+            display: inline-block;
+        }
+        #body ul li:nth-child(1){
+            border-radius: 15px 15px 0 0;
+            background-color: rgba(0,0,0,.3);
+            line-height: 40px;
+        }
+        #body ul li span{
+            width: 15%;
+        }
+        #body ul li span:nth-child(n+3){
+            text-align: center;
+        }
+        #body li span:nth-child(1){
+            padding-left: 30px;
+        }
+    </style>
+</head>
+<body>
+    <div id="box">
+        <div id="head">
+            <p>欢迎使用论文管理系统</p>
+            <span>用户名：{{name}}</span>
+            <span>单位：{{location}}</span>
+            <span>身份：{{jobName}}</span>
+            <br>
+            <div class="sec">
+                <input type="button" value="退出登录" onclick="window.location.href='exit'">
+                <!--此功能只有教师可以使用-->
+                <input type="button" value="提交论文" onclick="window.location.href='submit'" v-if="!admin&&!schAdmin">
+            </div>
+        </div>
+        <div id="body">
+            <ul>
+                <li>
+                    <span>论文名称</span>
+                    <span>状态</span>
+                    <span>上传日期</span>
+                    <span>修改日期</span>
+                    <span>操作</span>
+                    <span>提交者</span>
+                </li>
+                <li v-for="(item,key,index) of docList">
+                    <a :href="'detail?docid='+item.id">
+                        <span>{{item.name}}</span>
+                        <span>{{getStatus(item.status)}}</span>
+                        <span>{{item.creationTime}}</span>
+                        <span>{{item.lastModify}}</span>
+                    </a>
+                    <!--以下功能只有教师可以使用-->
+                    <span class="ablue" v-if="item.status==0||item.status==3&&!admin&&!schAdmin">
+                        <a :href="'submit?docid='+item.id">修改</a>
+                        <a @click="deleteFile('delete?docid='+item.id)" style="cursor: pointer;" v-if="item.status==0">删除</a>
+                        <a @click="submitFile('fileSubmit?docid='+item.id)" style="cursor: pointer;">提交</a>
+                    </span>
+                    <span class="ablue" v-else>
+                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                    </span>
+                    <span>{{item.author}}</span>
+                </li>
+            </ul>
+        </div>
+    </div>
+    <script src="/ajax.js"></script>
+    <script src="/vue.js"></script>
+    <script>
+        let data = {};
+        ajax({
+            url: 'command',
+            method:"post",
+            timeout: 1000,
+            success: function(msg){
+                data = JSON.parse(msg);
+                let app = new Vue({
+                    el:"#box",
+                    data,
+                    computed:{
+                        jobName(){
+                            if(this.admin)return "院管理员";
+                            if(this.schAdmin)return "校管理员";
+                            else return "教师";
+                        },
+                        getStatus(){
+                            return function (a) {
+                                switch (Number(a)) {
+                                    case 0:return "未提交";break;
+                                    case 1:return "审核中";break;
+                                    case 2:return "通过";break;
+                                    case 3:return "未通过";break;
+                                }
+                            }
+                        }
+                    },
+                    methods:{
+                        deleteFile(href){
+                            if(window.confirm("你确认删除吗？")){
+                                try {window.location.href = href;}
+                                catch(err){alert("删除失败")}
+                            }
+                        },
+                        submitFile(href){
+                            if(window.confirm("你确认真正提交吗？")){
+                                try {window.location.href = href;}
+                                catch(err){alert("提交失败，可能没有上传文件")}
+                            }
+                        }
+                    }
+                });
+                console.log(app.$data);
+            },
+            error: function(msg){
+                console.error(msg);
+            }
+        });
+    </script>
+</body>
+</html>

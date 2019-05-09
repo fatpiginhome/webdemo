@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>论文详情</title>
+    <style>
+        *{margin: 0;padding: 0;list-style: none;}
+        a{text-decoration: none;color: inherit;}
+        #box{
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            background-image: url("/www.acg.gy_04.jpg");
+            background-size: cover;
+        }
+        #body{
+            width: 72%;
+            margin: 30px auto;
+            padding:30px 10%;
+            background-color: rgba(255,255,255,.8);
+            border-radius: 15px;
+        }
+        #body h1{
+            text-align: center;
+        }
+        #body p{
+            margin: 30px 0;
+        }
+        .sec{
+            margin: 100px auto 200px;
+            word-spacing: 30px;
+            text-align: center;
+        }
+        .sec a{
+            display: inline-block;
+            background-color: dodgerblue;
+            color: white;
+            width: 100px;
+            height: 40px;
+            line-height: 40px;
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+    <div id="box">
+        <div id="body">
+            <h1>论文详情</h1>
+            <p>题目：{{name}}</p>
+            <p>论文类型：{{type}}</p>
+            <p>作者：{{authorname}}</p>
+            <p>身份：{{job}}</p>
+            <p>单位：{{location}}</p>
+            <p>摘要：{{description}}</p>
+            <p>关键词：{{keywords}}</p>
+            <p>分配金额：￥{{money}}</p>
+            <p>
+                文件：{{file}}
+                <a id="download" style="color: blue">下载文件</a>
+            </p>
+            <div class="sec">
+                <a href="command">返回</a>
+                <a :href="'submit?docid='+id" v-if="status==0||status==3&&!isAdmin">修改</a>
+                <a @click="deleteFile('delete?docid='+id)" v-if="status==0&&!isAdmin" style="cursor: pointer;">删除</a>
+                <a @click="submitFile('fileSubmit?docid='+id)" v-if="status==0||status==3&&!isAdmin" style="cursor: pointer;">提交</a>
+                <a @click="think('think?docid='+id+'&status='+2)" v-if="isAdmin&&status==1" style="cursor: pointer;">通过</a>
+                <a @click="think('think?docid='+id+'&status='+3)" v-if="isAdmin&&status==1" style="cursor: pointer;">退回修改</a>
+                <a :href="'downloadpdf?docid='+id" style="cursor: pointer;" target="_blank">导出为pdf</a>
+            </div>
+        </div>
+    </div>
+    <script src="/ajax.js"></script>
+    <script src="/vue.js"></script>
+    <script>
+        download.href = "/download?docid=" +  GetQueryString("docid");
+        let data = {};
+        function GetQueryString(name) {
+            let reg = new RegExp("(^|&)" + name + "=([^&]*)(&|$)", "i");
+            let r = window.location.search.substr(1).match(reg);  //获取url中"?"符后的字符串并正则匹配
+            let context = "";
+            if (r != null)
+                context = r[2];
+            reg = null;
+            r = null;
+            return context == null || context == "" || context == "undefined" ? "" : context;
+        }
+        console.log(GetQueryString('docid'));
+        ajax({
+            url: 'detail',
+            data:{
+                docid:Number(GetQueryString('docid'))
+            },
+            method:"post",
+            timeout: 30000,
+            success: function(msg){
+                data = JSON.parse(msg);
+                new Vue({
+                    el:"#box",
+                    data,
+                    methods:{
+                        deleteFile(href){
+                            if(window.confirm("你确认删除吗？")){
+                                window.location.href = href;
+                            }
+                        },
+                        submitFile(href){
+                            if(window.confirm("你确认真正提交吗？")){
+                                window.location.href = href;
+                            }
+                        },
+                        think(href){
+                            if(window.confirm("你确认要这么做吗？")){
+                                window.location.href = href;
+                            }
+                        }
+                    }
+                });
+            },
+            error: function(msg){
+                console.error(msg);
+            }
+        });
+    </script>
+</body>
+</html>
